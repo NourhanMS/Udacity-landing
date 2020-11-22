@@ -26,6 +26,10 @@ const NAV_CLASS = "menu__link";
  * 
 */
 
+/**
+* Function loops over sections and returns (name and id) of all navbar items that we need to build
+* 
+*/
 function getNavItemDetails() {
     const navSections = document.getElementsByTagName('section');
     let navItems = [];
@@ -37,6 +41,7 @@ function getNavItemDetails() {
     return {navItems,navItemIDs}
 }
 
+//Scroll to the section having id = clicked anchor attribute (data-url)
 function scrollIntoSection(e){
     let section_to_go_id = e.target.getAttribute('data-url');
     let section_to_go = document.getElementById(section_to_go_id);
@@ -59,6 +64,11 @@ function onNavItemClick(e){
     }
 }
 
+/**
+* Function changes the active section's class
+@input : dataNav  (data-nav is the name of the attribute given to the active section)
+* 
+*/
 function changeActiveSection(dataNav){
     let old_active_section = document.querySelector('section.your-active-class');
     if(old_active_section){
@@ -73,6 +83,11 @@ function changeActiveSection(dataNav){
     }
 }
 
+/**
+* Function changes the active item navbar's class
+@input : dataNav  (data-nav is the name of the attribute given to the active section)
+* 
+*/
 function changeActiveNav(dataNav){
     let old_active_item = document.querySelector('.menu__link.active');
     if(old_active_item){
@@ -87,6 +102,7 @@ function changeActiveNav(dataNav){
     }
 }
 
+//Function responsible for detecting the currenct active section on user's scrolling
 function onScroll(e){
     let allSections = document.querySelectorAll('section');
     for(let section of allSections){
@@ -100,23 +116,26 @@ function onScroll(e){
     }
 }
 
-function init(){
-    buildNav();
-    document.querySelector(".navbar__menu").addEventListener('click', e => onNavItemClick(e) );
-    // Add class 'active' to section when near top of viewport on user scrolling 
-    window.addEventListener('scroll', e => onScroll(e));
-}
 /**
  * End Helper Functions
  * Begin Main Functions
  * 
 */
 
-// build the nav
+function init(){
+    buildNav();
+    document.querySelector(".navbar__menu").addEventListener('click', e => onNavItemClick(e) );
+    // Add class 'active' to the  section near to the top of viewport on user's  scrolling 
+    window.addEventListener('scroll', e => onScroll(e));
+}
+
+/**
+ *  Build the navbar
+ */
+
 function buildNav(){
     const {navItems,navItemIDs} = getNavItemDetails();
     const fragment = document.createDocumentFragment();
-    const navigationListElement = document.getElementById('navbar__list');
     for(const index in navItems){
        let navigationItemElement = document.createElement('li');
        navigationItemElement.className = NAV_CLASS;
@@ -131,14 +150,16 @@ function buildNav(){
        navigationItemElement.appendChild(navigationAnchorElement);
        fragment.appendChild(navigationItemElement);
     }
+    const navigationListElement = document.getElementById('navbar__list');
     navigationListElement.appendChild(fragment);
 }
 
 
 /**
  * End Main Functions
- * 
+ *
 */
 
-// Build menu 
+//Code starting point  
+// Init function builds the navbar and initiate event listeners 
 setTimeout(init(),0);
