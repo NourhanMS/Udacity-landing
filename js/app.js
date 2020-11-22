@@ -37,8 +37,19 @@ function getNavItemDetails() {
     return {navItems,navItemIDs}
 }
 
+function scrollIntoSection(e){
+    let section_to_go_id = e.target.getAttribute('data-url');
+    let section_to_go = document.getElementById(section_to_go_id);
+    if(section_to_go){
+        section_to_go.scrollIntoView({behavior: "smooth"});
+    }
+}
+
 function onNavItemClick(e){
+    e.preventDefault();
     if (e.target.nodeName.toLowerCase() === 'a') {  // ← verifies target is desired element 
+        this.scrollIntoSection(e);
+        //Change the current active nav item
         let old_active_item = document.querySelector('.menu__link.active');
         if(old_active_item){
             old_active_item.classList.remove('active');
@@ -81,7 +92,6 @@ function onScroll(e){
     for(let section of allSections){
         var sectionBoundries  = section.getBoundingClientRect();  
         if(sectionBoundries.top >= 0){
-            console.log(sectionBoundries.top);
             let dataNav = section.getAttribute('data-nav');
             changeActiveSection(dataNav);
             changeActiveNav(dataNav);
@@ -116,7 +126,8 @@ function buildNav(){
        }
        let navigationAnchorElement = document.createElement('a');
        navigationAnchorElement.textContent = navItems[index];
-       navigationAnchorElement.setAttribute('href', '#'+ navItemIDs[index]);
+       navigationAnchorElement.setAttribute('data-url', navItemIDs[index]);
+       navigationAnchorElement.setAttribute('href', '');
        navigationItemElement.appendChild(navigationAnchorElement);
        fragment.appendChild(navigationItemElement);
     }
